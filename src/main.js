@@ -11,7 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 //组件使用
 Vue.use(mavonEditor)
-Vuu.use(Element)
+Vue.use(Element)
 //全局注册组件
 Vue.prototype.axios = axios;
 
