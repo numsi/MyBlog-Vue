@@ -15,6 +15,7 @@ Vue.use(Element)
 //全局注册组件
 Vue.prototype.axios = axios;
 
+
 Vue.config.productionTip = false
 
 new Vue({
@@ -22,3 +23,5 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+

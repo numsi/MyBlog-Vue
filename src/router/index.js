@@ -4,6 +4,7 @@ import Index from '../views/Index'
 import Home from '../views/Home'
 import Login from '../views/Login'
 import Register from '../views/Register'
+import ShowAll from '../components/ShowAll'
 
 
 Vue.use(VueRouter)
@@ -12,7 +13,14 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    component: Index
+    component: Index,
+    children:[
+        {
+            path:'new',
+            name:"New",
+            component:ShowAll
+        }
+    ]
   },
   {
       path: '/home',
