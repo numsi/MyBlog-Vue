@@ -9,12 +9,9 @@
             active-text-color="#ffd04b"
     >
 
-        <el-menu-item index="new">最新</el-menu-item>
-        <el-menu-item index="2">Java</el-menu-item>
-        <el-menu-item index="3">Python</el-menu-item>
-        <el-menu-item index="4">C</el-menu-item>
-        <el-menu-item index="5">C++</el-menu-item>
-        <el-menu-item index="6">C#</el-menu-item>
+        <el-menu-item v-for="(item,i) in sideList" :key="i" :index="item.name" @click="routerTo(item.name)" >
+            {{ item.sideItem }}
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -22,11 +19,31 @@
     export default {
         name: "SideBar",
         methods: {
+            routerTo(message) {
+                // this.$router.push({name: '/', params: {userId: 123}});
+                console.log("11111");
+                //发送博客种类
+                this.bus.$emit("blog_kind", message)
+            }
         },
         data(){
             return{
-                isActive:"new"
+                isActive:"new",
+                sideList: [
+                    {name: 'new', sideItem: '最新'},
+                    {name: 'java', sideItem: 'Java'},
+                    {name: 'python', sideItem: 'Python'},
+                    {name: 'c', sideItem: 'C'},
+                    {name: 'cpp', sideItem: 'C++'}
+                ]
             }
+        },
+        mounted(){
+            // this.$router.push({name: '/', params: {userId: 123}});
+            console.log("11111");
+            //发送博客种类
+            this.bus.$emit("blog_kind", this.isActive)
+
         }
     }
 </script>

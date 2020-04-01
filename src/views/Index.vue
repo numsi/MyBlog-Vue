@@ -13,7 +13,7 @@
                 </el-aside>
                 <!--内容-->
                 <el-main>
-                    <show-all></show-all>
+                    <router-view></router-view>
                 </el-main>
             </el-container>
         </el-container>

@@ -15,6 +15,10 @@ Vue.use(Element)
 //全局注册组件
 Vue.prototype.axios = axios;
 
+// 建立中转站，实现组件与组件之间的传值
+let bus = new Vue()
+Vue.prototype.bus = bus
+
 
 Vue.config.productionTip = false
 

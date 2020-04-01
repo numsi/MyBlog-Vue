@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isLogin:true
+    isLogin:true,
+    user_name:'',
+    token:'',
+    user_img_url:''
   },
   mutations: {
   },

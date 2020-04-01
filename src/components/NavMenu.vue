@@ -71,10 +71,10 @@
                     {name: '/', navItem: '首页'},
                     {name: '/blog', navItem: '博客'},
                     {name: '/comment', navItem: '评论'},
-                    {name: '/timeline', navItem: '时间线'}
+                    {name: '/动态', navItem: '动态'}
                 ],
                 keywords: '',
-                path: '',
+                path: '首页',
                 img_url:''
             }
         },
