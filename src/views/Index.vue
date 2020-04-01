@@ -7,14 +7,17 @@
             </el-header>
             <!--<el-row style="height: 100%;">-->
             <el-container>
+
                 <!--侧边栏-->
                 <el-aside style="height: 112%;margin-top: -80px;width: 250px">
                     <side-bar></side-bar>
+                    <!--<side-menu></side-menu>-->
                 </el-aside>
                 <!--内容-->
                 <el-main>
-                    <router-view></router-view>
+                    <show-all></show-all>
                 </el-main>
+
             </el-container>
         </el-container>
 
@@ -30,7 +33,7 @@
         components:{
             NavMenu,
             SideBar,
-            ShowAll
+            ShowAll,
         },
 
     }

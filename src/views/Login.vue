@@ -7,7 +7,7 @@
             <el-input type="text" v-model="loginForm.username"
                       auto-complete="off" placeholder="账号"></el-input>
         </el-form-item>
-        <el-form-item prop="user_password">
+        <el-form-item prop="password">
             <el-input type="password" v-model="loginForm.password" :type="pwdType"
                       auto-complete="off" placeholder="密码">
 
@@ -38,14 +38,15 @@
                     password: ''
                 },
                 loading: false,
-                pwdType:''
+                pwdType:'password'
             }
         },
         methods: {
             login() {
                 if(this.loginForm.username=="admin"&&this.loginForm.password=="123456"){
                     this.$message.success("登录成功")
-                    this.$router.push("/home")
+                    this.$store.commit("changeLogin")
+                    this.$router.push("/")
                 }else {
                     this.$message.error("账号密码错误")
                     //清空账号密码

@@ -5,6 +5,7 @@ import Home from '../views/Home'
 import Login from '../views/Login'
 import Register from '../views/Register'
 import ShowAll from '../components/ShowAll'
+import MyBlog from '../views/user/MyBlog'
 
 
 Vue.use(VueRouter)
@@ -14,44 +15,12 @@ const routes = [
     path: '/',
     name: 'Index',
     component: Index,
-    children:[
-        {
-            path:'/',
-            name:"",
-            component:ShowAll,
-
-        },
-        {
-            path:'new',
-            name:"New",
-            component:ShowAll
-        },
-        {
-            path:'java',
-            name:"Java",
-            component:ShowAll
-        },
-        {
-            path:'python',
-            name:"Python",
-            component:ShowAll
-        },
-        {
-            path:'c',
-            name:"C",
-            component:ShowAll
-        },
-        {
-            path:'cpp',
-            name:"C++",
-            component:ShowAll
-        }
-    ]
+    // redirect:'/showAll',
   },
   {
-      path: '/home',
-      name: 'Home',
-      component: Home
+      path: '/blog',
+      name: 'MyBlog',
+      component: MyBlog
   },
   {
       path: '/login',

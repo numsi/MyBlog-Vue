@@ -23,7 +23,7 @@
                     @keyup.enter.native="search"
             >
             </el-input>
-            <el-menu-item style="position: absolute;right: 8%">
+            <el-menu-item index="/blogedit"  style="position: absolute;right: 8%">
                 <i class="el-icon-edit"></i>
                 博文创作
             </el-menu-item>
@@ -53,8 +53,8 @@
             <!--<el-menu-item v-if="this.$store.state.isLogin" style="position: absolute;right:0">-->
                 <!--<el-avatar> user </el-avatar>-->
             <!--</el-menu-item>-->
-            <el-menu-item v-else style="position: absolute;right:0">
-                <router-link to="/login">注册/登录</router-link>
+            <el-menu-item index="/login" v-else style="position: absolute;right:0">
+                注册/登录
             </el-menu-item>
         </el-menu>
 
@@ -70,11 +70,11 @@
                 navList: [
                     {name: '/', navItem: '首页'},
                     {name: '/blog', navItem: '博客'},
-                    {name: '/comment', navItem: '评论'},
+                    // {name: '/comment', navItem: '评论'},
                     {name: '/动态', navItem: '动态'}
                 ],
                 keywords: '',
-                path: '首页',
+                path: '/',
                 img_url:''
             }
         },
@@ -95,7 +95,7 @@
         methods: {
             search(){
                 console.log("出发搜索");
-            }
+            },
         }
     }
 </script>
