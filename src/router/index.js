@@ -15,13 +15,22 @@ const routes = [
     path: '/',
     name: 'Index',
     component: Index,
-    // redirect:'/showAll',
+     redirect:'/home',
+      children:[
+          {
+              path: '/home',
+              name: 'Home',
+              component: Home,
+          },
+          {
+              path: '/blog',
+              name: 'MyBlog',
+              component: MyBlog
+          },
+      ]
   },
-  {
-      path: '/blog',
-      name: 'MyBlog',
-      component: MyBlog
-  },
+
+
   {
       path: '/login',
       name: 'Login',

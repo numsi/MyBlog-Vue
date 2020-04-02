@@ -1,0 +1,30 @@
+{
+  "id": "1729559",
+  "name": "tets",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "8106285",
+      "name": "eye_protection",
+      "font_class": "eye_protection",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "10678426",
+      "name": "message",
+      "font_class": "message",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "11372651",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e8ad",
+      "unicode_decimal": 59565
+    }
+  ]
+}

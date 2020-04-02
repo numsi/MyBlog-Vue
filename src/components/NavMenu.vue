@@ -68,7 +68,7 @@
         data () {
             return {
                 navList: [
-                    {name: '/', navItem: '首页'},
+                    {name: '/home', navItem: '首页'},
                     {name: '/blog', navItem: '博客'},
                     // {name: '/comment', navItem: '评论'},
                     {name: '/动态', navItem: '动态'}

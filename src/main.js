@@ -7,6 +7,7 @@ import 'mavon-editor/dist/css/index.css'
 import axios from 'axios'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import './assets/iconfont/iconfont.css'
 
 
 //组件使用
