@@ -6,6 +6,7 @@ import Login from '../views/Login'
 import Register from '../views/Register'
 import ShowAll from '../components/ShowAll'
 import MyBlog from '../views/user/MyBlog'
+import Detail from '../views/user/ArticleDetails'
 
 
 Vue.use(VueRouter)
@@ -27,6 +28,11 @@ const routes = [
               name: 'MyBlog',
               component: MyBlog
           },
+          {
+              path:'/detail',
+              name:'Detail',
+              component:Detail
+          }
       ]
   },
 

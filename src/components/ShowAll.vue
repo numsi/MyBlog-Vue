@@ -13,9 +13,9 @@
             <el-card style="text-align: left">
                 <div v-for="blog in blogs" :key="blog.blog_id">
                     <div style="float:left;width:85%;height: 150px;">
-                        <router-link class="article-link" :to="{path:'jotter/article',query:{id: blog.blog_id}}"><span style="font-size: 20px"><strong>{{blog.blog_title}}</strong></span></router-link>
+                        <router-link class="article-link" :to="{path:'detail',query:{id: blog.blog_id}}"><span style="font-size: 20px"><strong>{{blog.blog_title}}</strong></span></router-link>
                         <el-divider content-position="left">{{blog.blog_creattime}}</el-divider>
-                        <router-link class="article-link" :to="{path:'jotter/article',query:{id: blog.id}}"><p>{{blog.blog_abstract}}</p></router-link>
+                        <router-link class="article-link" :to="{path:'detail',query:{id: blog.blog_id}}"><p>{{blog.blog_abstract}}</p></router-link>
 
                     </div>
                     <el-image
