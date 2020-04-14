@@ -7,7 +7,8 @@ import Register from '../views/Register'
 import ShowAll from '../components/ShowAll'
 import MyBlog from '../views/user/MyBlog'
 import Detail from '../views/user/ArticleDetails'
-
+import ArticleEditor from '../views/user/ArticleEditor'
+import Error from '../views/Error404'
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,11 @@ const routes = [
               path:'/detail',
               name:'Detail',
               component:Detail
+          },
+          {
+              path:'/article/editor',
+              name:'ArticleEditor',
+              component:ArticleEditor
           }
       ]
   },
@@ -47,6 +53,16 @@ const routes = [
       name: 'Register',
       component: Register
   },
+
+    {
+        path: "/404",
+        name: "notFound",
+        component: Error
+    },
+    {
+        path: "*",
+        redirect: "/404"
+    }
 ]
 
 const router = new VueRouter({

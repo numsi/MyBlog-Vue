@@ -23,7 +23,7 @@
                     @keyup.enter.native="search"
             >
             </el-input>
-            <el-menu-item index="/blogedit"  style="position: absolute;right: 8%">
+            <el-menu-item index="article/editor"  style="position: absolute;right: 8%">
                 <i class="el-icon-edit"></i>
                 博文创作
             </el-menu-item>

@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <nav-menu></nav-menu>
         <router-view></router-view>
         <!--<el-container id="admin-body" style="height: 100%" direction="vertical">-->
