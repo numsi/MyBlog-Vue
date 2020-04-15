@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     uid:'11',
-    isLogin:false,
+    isLogin:true,
     user_name:'',
     token:'',
     user_img_url:''

@@ -24,11 +24,16 @@
                 </div>
                 <!--点赞功能-->
                 <div>
-                    <span class="like" @click="toLike">
+                    <el-button class="like" @click="toLike">
                         <i  v-if="!isLike" class="iconfont">&#xe618;</i>
                         <i  v-if="isLike" class="iconfont">&#xe62d;</i>
                         点赞
-                    </span>
+                    </el-button>
+                    <!--<span >-->
+                        <!--<i  v-if="!isLike" class="iconfont">&#xe618;</i>-->
+                        <!--<i  v-if="isLike" class="iconfont">&#xe62d;</i>-->
+                        <!--点赞-->
+                    <!--</span>-->
                 </div>
             </div>
         </el-card>

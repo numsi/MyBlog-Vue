@@ -36,15 +36,15 @@
                 <template slot="title">
                     <el-avatar> user </el-avatar>
                 </template>
-                <el-menu-item index="2-1">
+                <el-menu-item index="userinfo">
                     <i class="el-icon-user"></i>
                     个人信息
                 </el-menu-item>
+                <!--<el-menu-item index="2-2">-->
+                    <!--<i class="el-icon-bell"></i>-->
+                    <!--消息通知-->
+                <!--</el-menu-item>-->
                 <el-menu-item index="2-2">
-                    <i class="el-icon-bell"></i>
-                    消息通知
-                </el-menu-item>
-                <el-menu-item index="2-3">
                     <i class="el-icon-s-tools"></i>
                     退出
                 </el-menu-item>

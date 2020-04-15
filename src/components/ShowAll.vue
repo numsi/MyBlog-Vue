@@ -24,7 +24,7 @@
                             fit="cover"></el-image>
                     <el-divider></el-divider>
                     <span>
-                    <router-link to="">{{blog.blog_author}}</router-link>
+                    <router-link :to="{path:'showuser',query:{id: blog.blog_author}}">{{blog.blog_author}}</router-link>
                         <!--阅读数-->
                     <i class="iconfont" style="margin-left: 10px">&#xe6a0;
                       <span style="font-size:12px;margin-left:1px;">{{blog.blog_views}}</span>

@@ -22,7 +22,7 @@
 
 <style scoped>
     .error-page {
-        background:url("../assets/img/404Backgroud.jpg") no-repeat;
+        background:url("../assets/img/404Background.jpg") no-repeat;
         background-position: center;
         margin: 0;
         height: 100%;
