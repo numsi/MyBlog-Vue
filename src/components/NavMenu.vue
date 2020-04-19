@@ -71,7 +71,7 @@
                     {name: '/home', navItem: '首页'},
                     {name: '/blog', navItem: '博客'},
                     // {name: '/comment', navItem: '评论'},
-                    {name: '/动态', navItem: '动态'}
+                    {name: '/action', navItem: '动态'}
                 ],
                 keywords: '',
                 path: '/',
@@ -94,7 +94,11 @@
         },
         methods: {
             search(){
-                console.log("出发搜索");
+                console.log(this.keywords);
+                this.$router.push({ path: '/search', query: { keyword: this.keywords }}).catch(err => {
+                    console.log(err)
+                });
+                this.keywords='';
             },
         }
     }

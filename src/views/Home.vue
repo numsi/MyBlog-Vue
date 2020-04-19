@@ -1,9 +1,8 @@
 <template>
 
     <div style="margin-top: 60px">
-
         <side-bar></side-bar>
-        <show-all style="margin-left: 225px"></show-all>
+        <show-all :kind="blog_kind" style="margin-left: 225px"></show-all>
     </div>
 </template>
 
@@ -17,7 +16,17 @@
             SideBar,
             ShowAll,
             NavMenu
-        }
+        },
+        data(){
+            return{
+                blog_kind:'-1'
+            }
+        },
+        mounted() {
+            let self = this;
+            this.bus.$on("blog_kind", function(item) { self.blog_kind = item; })
+            this.bus.$on("blog_tag", function(item) { self.blog_tag = item; })
+        },
     }
 </script>
 

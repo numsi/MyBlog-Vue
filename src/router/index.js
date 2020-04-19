@@ -10,6 +10,8 @@ import ArticleEditor from '../views/user/ArticleEditor'
 import Error from '../views/Error404'
 import ShowUser from '../views/user/ShowUser'
 import UserInfo from '../views/user/UserInfo'
+import Search from '../views/user/Search'
+import UserAction from '../views/user/UserAction'
 
 Vue.use(VueRouter)
 
@@ -49,6 +51,16 @@ const routes = [
               path:'/userinfo',
               name:'UserInfo',
               component:UserInfo
+          },
+          {
+              path:'/search',
+              name:'Search',
+              component:Search
+          },
+          {
+              path:'/action',
+              name:'UserAction',
+              component:UserAction
           }
       ]
   },

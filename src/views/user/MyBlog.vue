@@ -1,7 +1,7 @@
 <template>
     <div>
         <tags style="height: 112%;margin-top: 70px;width: 250px;margin-left: 1000px"></tags>
-        <show-all style="margin-top: -150px"></show-all>
+        <show-all :user_name="user_name" :tag="blog_tag" style="margin-top: -150px"></show-all>
         <!--<el-container id="admin-body">-->
             <!--&lt;!&ndash;顶部导航栏&ndash;&gt;-->
             <!--<el-header style="z-index: 1;height: 80px;margin-left: -2.2%">-->
@@ -38,10 +38,15 @@
         data(){
 
             return{
-                user_name:"测试用户"
+                user_name:"测试用户",
+                blog_tag:''
             }
 
-        }
+        },
+        mounted() {
+            let self = this;
+            this.bus.$on("blog_tag", function(item) { self.blog_tag = item; })
+        },
     }
 </script>
 

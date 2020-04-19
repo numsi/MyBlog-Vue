@@ -8,6 +8,10 @@
         <!--<h5>user_name:{{user_name}}</h5>-->
     <!--</div>-->
     <div style="margin-top: 40px">
+        <!--<h2>{{user_name}}</h2>-->
+        <!--<h2>{{keyword}}</h2>-->
+        <!--<h2>kind:{{kind}}</h2>-->
+        <!--<h2>tag:{{tag}}</h2>-->
         <!--<el-button @click="addArticle()">添加文章</el-button>-->
         <div class="articles-area">
             <el-card style="text-align: left">
@@ -66,7 +70,10 @@
     export default {
         name: "ShowAll",
         props:{
-            user_name:''
+            user_name:'',
+            keyword:'',
+            kind:'',
+            tag:''
         },
         data() {
             return {
@@ -159,14 +166,10 @@
 
             }
         },
-        mounted() {
-            let self = this;
-            this.bus.$on("blog_kind", function(item) { self.blog_kind = item; })
-            this.bus.$on("blog_tag", function(item) { self.blog_tag = item; })
-            this.bus.$on("user_name", function(item) { self.user_name = item; })
-        },
         created(){
-            this.name="222"
+            this.name="222";
+            console.log(this.user_name);
+            console.log(this.keyword);
         },
         methods: {
             // handleSizeChange(val) {
