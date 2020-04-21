@@ -8,7 +8,7 @@
                     <b>用户昵称</b>
                 </div>
             </el-col>
-            <el-col :span="3" offset="11">
+            <el-col :span="3" :offset="11">
                 <div class="grid-content bg-purple">
                     <el-button class="follow" >
                         <a v-if="!isFollow" @click="toFollow">关注</a>

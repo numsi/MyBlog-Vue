@@ -36,7 +36,7 @@
                 <template slot="title">
                     <el-avatar> user </el-avatar>
                 </template>
-                <el-menu-item index="userinfo">
+                <el-menu-item index="usersetting">
                     <i class="el-icon-user"></i>
                     个人信息
                 </el-menu-item>
