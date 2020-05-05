@@ -45,27 +45,25 @@
         </div>
 
     </div>
-
 </template>
 
 <script>
     export default {
-        name: "ShowAll",
-
+        name: "SearchResult",
         data(){
             return {
                 blogs:[],
                 pageSize: 10,
                 total: 0,
                 pageNum:1,
-                userID:''
+                keyword:''
             }
         },
         methods:{
-            loadByUser(){
+            loadSearch(){
                 let _this =this;
 
-                this.$axios.get('/blog/listByUser?id='+_this.userID+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
+                this.$axios.get('/blog/search/?keyword='+_this.keyword+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
                     if (resp && resp.data.code === 200) {
                         // _this.books = resp.data.result
                         console.log(resp.data.result);
@@ -101,9 +99,7 @@
                                     _this.$set(item, 'commentNum', resp.data.result);
                                 }
                             })
-
                         })
-
                         console.log(resp.data.result.list);
                     }
                 })
@@ -112,7 +108,7 @@
             handleCurrentChange(page) {
                 this.pageNum=page;
                 let _this = this;
-                this.$axios.get('/blog/listByUser?id='+_this.uid+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
+                this.$axios.get('/blog/search/?keyword='+_this.keyword+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
                     if (resp && resp.data.code === 200) {
                         // _this.books = resp.data.result
                         console.log(resp.data.result);
@@ -130,7 +126,6 @@
 
                                 }
                             })
-
                             this.$axios.get('/view/get/' + item.blogId).then(resp => {
                                 if (resp && resp.data.code === 200) {
                                     _this.$set(item, 'viewNum', resp.data.result);
@@ -173,8 +168,8 @@
         },
         mounted(){
 
-            this.userID=this.$route.query.userId;
-            this.loadByUser();
+            this.keyword=this.$route.query.keyword;
+            this.loadSearch();
             // let self = this;
             // this.bus.$on("blog_kind", function(item) { self.blog_kind = item; })
             // console.log(this.kind);
@@ -184,9 +179,6 @@
             // this.$set(this.blog_kind,1,this.kind);
             // console.log(this.blog_kind);
         },
-
-
-
     }
 </script>
 

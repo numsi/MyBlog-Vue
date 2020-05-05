@@ -2,6 +2,7 @@
     <div>
 
         <el-menu
+                @select="handleSelect"
                 :default-active="path"
                 router
                 mode="horizontal"
@@ -10,7 +11,7 @@
                 active-text-color="red"
                 style="min-width: 1000px"
         >
-            <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name">
+            <el-menu-item v-for="(item,i) in navList" :key="i" :index="item.name" @click.native="changeUrl(item.name)">
                 {{ item.navItem }}
             </el-menu-item>
             <span style="position: absolute;padding-top: 20px;right: 50%;font-size: 20px;font-weight: bold">MyBlog---a free blog system</span>
@@ -23,7 +24,7 @@
                     @keyup.enter.native="search"
             >
             </el-input>
-            <el-menu-item index="article/editor"  style="position: absolute;right: 8%">
+            <el-menu-item  @click.native="changeUrl('/editor')"  style="position: absolute;right: 8%">
                 <i class="el-icon-edit"></i>
                 博文创作
             </el-menu-item>
@@ -34,9 +35,9 @@
 
             <el-submenu index="2" v-if="this.$store.state.isLogin" style="position: absolute;right:0">
                 <template slot="title">
-                    <el-avatar> user </el-avatar>
+                    <el-avatar size="large" :src="this.$store.state.user_img_url"> </el-avatar>
                 </template>
-                <el-menu-item index="usersetting">
+                <el-menu-item  @click.native="changeUrl('/usersetting')">
                     <i class="el-icon-user"></i>
                     个人信息
                 </el-menu-item>
@@ -44,7 +45,7 @@
                     <!--<i class="el-icon-bell"></i>-->
                     <!--消息通知-->
                 <!--</el-menu-item>-->
-                <el-menu-item index="2-2">
+                <el-menu-item @click="loginOut()">
                     <i class="el-icon-s-tools"></i>
                     退出
                 </el-menu-item>
@@ -71,7 +72,7 @@
                     {name: '/home', navItem: '首页'},
                     {name: '/blog', navItem: '博客'},
                     // {name: '/comment', navItem: '评论'},
-                    {name: '/action', navItem: '动态'}
+                    // {name: '/action', navItem: '动态'}
                 ],
                 keywords: '',
                 path: '/',
@@ -90,7 +91,7 @@
         computed: {
             hoverBackground () {
                 return '#ffd04b'
-            }
+            },
         },
         methods: {
             search(){
@@ -100,6 +101,16 @@
                 });
                 this.keywords='';
             },
+            loginOut(){
+                this.$store.commit('loginOut');
+                this.$router.go(0);
+
+                // this.$router.push('/');
+            },
+            changeUrl(url){
+                console.log(url);
+                this.$router.push(url);
+            }
         }
     }
 </script>

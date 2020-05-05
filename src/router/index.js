@@ -16,6 +16,7 @@ import UserAction from '../views/user/UserAction'
 import InfoManagement from '../components/InfoManagement'
 import BlogManagement from '../components/BlogManagement'
 import PasswordUpdate from '../components/PasswordUpdate'
+import TagManagement from '../components/TagManagement'
 import MyFollow from '../components/MyFollow'
 import CommentManagement from '../components/CommentManagement'
 
@@ -44,7 +45,7 @@ const routes = [
               component:Detail
           },
           {
-              path:'/article/editor',
+              path:'/editor',
               name:'ArticleEditor',
               component:ArticleEditor
           },
@@ -73,6 +74,11 @@ const routes = [
                       path:'my_follow',
                       name:'MyFollow',
                       component:MyFollow
+                  },
+                  {
+                      path:'my_tag',
+                      name:'TagManagement',
+                      component:TagManagement
                   },
                   {
                       path:'my_comment',

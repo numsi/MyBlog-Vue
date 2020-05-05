@@ -3,16 +3,16 @@
         <span>
             <strong>{{keyword}}的搜索结果内容如下：</strong>
         </span>
-        <show-all :keyword="keyword"></show-all>
+        <search-result ></search-result>
     </div>
 </template>
 
 <script>
-    import ShowAll from '../../components/ShowAll' //引入显示所有博文
+    import SearchResult from '../../components/SearchResult' //引入显示所有博文
     export default {
         name: "Serach",
         components:{
-            ShowAll
+            SearchResult
         },
         data(){
             return{

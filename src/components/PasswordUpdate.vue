@@ -69,37 +69,73 @@
         },
         methods: {
             toAmend() {
-                this.$refs.resetForm.validate(valid => {
-                    if (valid) {
-                        //这里的api.materialQuery.toAmend是调用前期我们统一的api接口url路径，不作参考 ，只要把后台需要的字段正常传进去即可
-                        api.materialQuery.toAmend(this.resetForm)
-                            .then(res => {
-                                if (res.code === 2) {
-                                    this.$message({
-                                        message: res.msg,
-                                        type: "error",
-                                        duration: "2000"
-                                    });
-                                    return false;
+                // this.$refs.resetForm.validate(valid => {
+                //     if (valid) {
+                //         //这里的api.materialQuery.toAmend是调用前期我们统一的api接口url路径，不作参考 ，只要把后台需要的字段正常传进去即可
+                //         api.materialQuery.toAmend(this.resetForm)
+                //             .then(res => {
+                //                 if (res.code === 2) {
+                //                     this.$message({
+                //                         message: res.msg,
+                //                         type: "error",
+                //                         duration: "2000"
+                //                     });
+                //                     return false;
+                //                 }
+                //                 if (res.code === 0) {
+                //                     this.$message.success("修改成功,3秒后跳转到登录页！");
+                //                     setTimeout(() => {
+                //                         // this.logout();//调用跳转到登陆页的方法
+                //                         this.$router.push(`/home`)
+                //                     }, 3000);
+                //                 }
+                //                 ic
+                //             })
+                //             .catch(() => {
+                //             });
+                //     }
+                // });
+
+                let _this = this;
+                let uid = this.$store.state.uid;
+                let username = this.$store.state.username;
+
+                this.$axios
+                    .post('/user/login', {
+                        userUsername: username,
+                        userPassword: this.resetForm.password
+                    })
+                    .then(resp => {
+                        if (resp.data.code === 200) {
+                            let data = resp.data.result
+                            // _this.$store.commit('login', data)
+
+                            _this.$axios.post('/user/update',{
+                                userId:uid,
+                                userPassword:_this.resetForm.newpassword1,
+                            }).then(resp => {
+                                if (resp && resp.data.code === 200) {
+                                    let data = resp.data.result
+                                    // _this.$store.commit('login', data)
+                                    console.log(data);
+                                    _this.$message("密码修改成功");
+                                    this.$router.push("/home");
                                 }
-                                if (res.code === 0) {
-                                    this.$message.success("修改成功,3秒后跳转到登录页！");
-                                    setTimeout(() => {
-                                        this.logout();//调用跳转到登陆页的方法
-                                    }, 3000);
-                                }
-                                ic
                             })
-                            .catch(() => {
-                            });
-                    }
-                });
+
+
+                        } else {
+                            this.$message("原密码错误")
+                        }
+                        // console.log(resp);
+                    })
+                    .catch(failResponse => {})
             },
             //这是修改成功后重新返回登陆页的方法，看个人需要自行调整
-            async logout() {
-                await this.$store.dispatch("user/logout");
-                this.$router.push(`/login`);
-            }
+            // async logout() {
+            //     await this.$store.dispatch("user/logout");
+            //     this.$router.push(`/login`);
+            // }
         }
     }
 </script>

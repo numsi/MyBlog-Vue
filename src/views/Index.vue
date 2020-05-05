@@ -28,13 +28,13 @@
 <script>
     import NavMenu from '../components/NavMenu' //引入顶端导航栏
     import SideBar from '../components/SideBar' //引入侧边导航栏
-    import ShowAll from '../components/ShowAll' //引入显示所有博文
+
     export default {
         name: "Index",
         components:{
             NavMenu,
             SideBar,
-            ShowAll,
+
         },
 
     }

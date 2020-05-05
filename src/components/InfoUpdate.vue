@@ -2,7 +2,7 @@
 
     <el-form ref="form" :model="form" label-width="80px" style="">
         <el-form-item label="用户昵称">
-            <el-input v-model="form.name" style="width:200px;"></el-input>
+            <el-input v-model="form.name" style="width:200px;" ></el-input>
         </el-form-item>
         <el-form-item label="用户邮箱">
 

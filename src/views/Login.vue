@@ -43,17 +43,39 @@
         },
         methods: {
             login() {
-                if(this.loginForm.username=="admin"&&this.loginForm.password=="123456"){
-                    this.$message.success("登录成功")
-                    this.$store.commit("changeLogin")
-                    this.$router.push("/")
-                }else {
-                    this.$message.error("账号密码错误")
-                    //清空账号密码
-                    this.loginForm.username=""
-                    this.loginForm.password=""
-                    // this.$router.push("/login")
+                let _this = this;
+                if(this.loginForm.username=='' || this.loginForm.password=='')
+                {
+                    this.$message("请将数据填写完整");
+                    return;
                 }
+                console.log(this.loginForm);
+                this.$axios
+                    .post('/user/login', {
+                        userUsername: this.loginForm.username,
+                        userPassword: this.loginForm.password
+                    })
+                    .then(resp => {
+                        if (resp.data.code === 200) {
+                            let data = resp.data.result
+                            // _this.$store.commit('login', data)
+                            console.log(data);
+                            _this.$store.commit('getUid',data.userId);
+                            _this.$store.commit('getToken',data.userId);
+                            _this.$store.commit('getUserName',data.userUsername);
+                            _this.$store.commit('getNickname',data.userNickname);
+                            _this.$store.commit('getImg',data.userImgUrl);
+                            _this.$router.push("/home");
+                        } else {
+                            this.$alert(resp.data.message, '提示', {
+                                confirmButtonText: '确定'
+                            })
+                            _this.loginForm.username='';
+                            _this.loginForm.password='';
+                        }
+                        // console.log(resp);
+                    })
+                    .catch(failResponse => {})
 
             },
             showPwd () {

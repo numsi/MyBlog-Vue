@@ -1,7 +1,7 @@
 <template>
     <div>
         <user-card></user-card>
-        <show-all style= "text-align: left;width: 990px;margin: 35px auto 0 auto;"></show-all>
+        <show-all  style= "text-align: left;width: 990px;margin: 35px auto 0 auto;"></show-all>
     </div>
 
 </template>
@@ -15,7 +15,15 @@
         components:{
             UserCard,
             ShowAll
-        }
+        },
+        data(){
+            return {
+                userID:''
+            }
+        },
+        mounted() {
+
+        },
     }
 </script>
 

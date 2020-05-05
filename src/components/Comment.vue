@@ -8,16 +8,22 @@
                 <div v-else>
                     <div class="comment" v-for="(item,index) in comment" v-bind:index="index" >
                         <div>
-                            <b>{{item.name}}<span>{{item.time}}</span></b>
-                            <p @click="changeCommenter(item.name,index)">{{item.content}}</p>
-                        </div>
-                        <div v-if="item.reply.length > 0">
-                            <div class="reply" v-for="reply in item.reply">
-                                <b>{{reply.responder}}  回复  {{reply.reviewers}}<span>{{reply.time}}</span></b>
-                                <p @click="changeCommenter(reply.responder,index)">{{reply.content}}</p>
-                            </div>
+                            <b>{{item.userNickname}}<span>{{item.commentUpdate}}</span><span v-if="item.commentParent!=-1">回复  :{{item.reply}}</span></b>
+                            <b></b>
+                            <p @click="changeCommenter(item.commentAuthor,item.commentId)">{{item.commentContent}}</p>
                         </div>
                     </div>
+                </div>
+
+                <div style="margin: 20px 0 50px 0">
+                    <el-pagination
+                            background
+                            style="float:right;"
+                            layout="total, prev, pager, next, jumper"
+                            @current-change="handleCurrentChange"
+                            :page-size="pageSize"
+                            :total="total">
+                    </el-pagination>
                 </div>
             </div>
 
@@ -38,36 +44,17 @@
         name: "Comment",
         data(){
             return{
+                blogID:'',
+                pageSize: 10,
+                total: 0,
+                pageNum:1,
+                tempName:'',
+
                 commenter: "session",   //评论人
                 type: 0,                //0为评论作者1为评论别人的评论2为评论别人的别人
                 oldComment: null,
                 chosedIndex: -1,        //被选中的评论的index
                 comment: [
-                    {
-                        name: "有毒的黄同学",
-                        time: "2016-08-17",
-                        content: "好,讲得非常好，good",
-                        reply: [
-                            {
-                                responder: "有毒的黄同学",
-                                reviewers: "傲娇的",
-                                time: "2016-09-05",
-                                content: "你说得对"
-                            },
-                            {
-                                responder: "傲娇的",
-                                reviewers: "有毒的黄同学",
-                                time: "2016-09-05",
-                                content: "很强"
-                            }
-                        ]
-                    },
-                    {
-                        name: "Freedom小黄",
-                        time: "2016-08-17",
-                        content: "好,讲得非常好，good",
-                        reply: []
-                    }
                 ],    //评论内容
                 commentText:'',
                 name:''
@@ -76,27 +63,32 @@
         methods:{
             //增加评论
             addComment(data) {
-                if(this.type == 0) {
-                    this.comment.push({
-                        name: 'session',
-                        time: getTime(),
-                        content: data,
-                        reply: []
-                    });
-                    //服务器端变
-                }else if(this.type == 1){
-                    this.comment[this.chosedIndex].reply.push({
-                        responder: 'session',
-                        reviewers:this.comment[this.chosedIndex].name,
-                        time: getTime(),
-                        content: data
-                    });
-                    this.type = 0;
-                }
+
+                    let _this = this;
+                    _this.$axios.post('/comment/add',{
+                        commentContent:this.commentText,
+                        commentAuthor:this.commenter,
+                        commentBlog:this.blogID,
+                        commentParent:this.chosedIndex
+
+                    }).then(resp => {
+                        if (resp && resp.data.code === 200) {
+                            let data = resp.data.result
+                            // _this.$store.commit('login', data)
+                            console.log(data);
+                            this.$router.go(0);
+                        }else {
+                            console.log(resp.data.message);
+                            _this.$message(resp.data.message)
+                        }
+                    })
+
             },
             //改变回复者
             changeCommenter(name,index){
-                this.oldComment = name;
+                 this.getName(name);
+                this.oldComment =this.tempName
+
                 this.chosedIndex = index;
                 this.type = 1;
                 console.log(name);
@@ -104,7 +96,134 @@
             //改变回复者为本文作者
             canelComment() {
                 this.type = 0;
+            },
+            loadComment(){
+                let _this =this;
+                this.$axios.get('/comment/listByBlog?id='+_this.blogID+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        // _this.books = resp.data.result
+                        // console.log(resp.data.result);
+                        _this.total=resp.data.result.total;
+                        _this.comment=resp.data.result.list;
+
+                        let _is = _this;
+
+                        _this.comment.forEach((item,i) => {
+                            this.$axios.get('/user/get/'+item.commentAuthor).then(resp => {
+                                if (resp && resp.data.code === 200) {
+                                    // _this.books = resp.data.result
+                                    _this.$set(item,'userNickname',resp.data.result.userNickname);
+                                    // item.userNickname=resp.data.result.userNickname;
+                                    // console.log(resp.data.result.userNickname);
+                                    // _this.follows.userNickName = resp.data.result.userNickname;
+                                    // return row.followFollowerid=resp.data.result.userNickname;
+
+                                }
+                            });
+
+                            if(item.commentParent!=-1)
+                            {
+
+                                _this.$axios.get('/comment/get/'+item.commentParent).then(resp => {
+                                    if (resp && resp.data.code === 200) {
+
+                                        _this.getName(resp.data.result.commentAuthor);
+                                        _this.$set(item,'reply',resp.data.result.commentUpdate);
+
+                                    }
+                                })
+                            }
+                        })
+
+                        // _this.comment.forEach((item,i) => {
+                        //     if(item.commentParent!=-1)
+                        //     {
+                        //         this.$axios.get('/comment/get/'+item.commentParent).then(resp => {
+                        //             if (resp && resp.data.code === 200) {
+                        //                 // _this.books = resp.data.result
+                        //                 console.log(resp.data.result);
+                        //                 // _this.$set(item,'parent',resp.data.result.userNickname);
+                        //                 // item.userNickname=resp.data.result.userNickname;
+                        //                 // console.log(resp.data.result.userNickname);
+                        //                 // _this.follows.userNickName = resp.data.result.userNickname;
+                        //                 // return row.followFollowerid=resp.data.result.userNickname;
+                        //
+                        //             }
+                        //         })
+                        //     }
+                        //
+                        // })
+
+                        // console.log(resp.data.result.list);
+                    }
+                })
+            },
+            handleCurrentChange(page) {
+                this.pageNum=page;
+                let _this =this;
+                this.$axios.get('/comment/listByBlog?id='+_this.blogID+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        // _this.books = resp.data.result
+                        // console.log(resp.data.result);
+                        _this.total = resp.data.result.total;
+                        _this.comment = resp.data.result.list;
+
+                        _this.comment.forEach((item, i) => {
+                            this.$axios.get('/user/get/' + item.commentAuthor).then(resp => {
+                                if (resp && resp.data.code === 200) {
+                                    // _this.books = resp.data.result
+                                    _this.$set(item, 'userNickname', resp.data.result.userNickname);
+                                    // item.userNickname=resp.data.result.userNickname;
+                                    // console.log(resp.data.result.userNickname);
+                                    // _this.follows.userNickName = resp.data.result.userNickname;
+                                    // return row.followFollowerid=resp.data.result.userNickname;
+
+                                }
+                            })
+
+                            if (item.commentParent != -1) {
+
+                                _this.$axios.get('/comment/get/' + item.commentParent).then(resp => {
+                                    if (resp && resp.data.code === 200) {
+                                        // _this.books = resp.data.result
+                                        _this.getName(resp.data.result.commentAuthor);
+                                        _this.$set(item,'reply',_this.tempName+"  "+resp.data.result.commentUpdate);
+                                        // _this.$set(item,'parent',resp.data.result.userNickname);
+                                        // item.userNickname=resp.data.result.userNickname;
+                                        // console.log(resp.data.result.userNickname);
+                                        // _this.follows.userNickName = resp.data.result.userNickname;
+                                        // return row.followFollowerid=resp.data.result.userNickname;
+
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            },
+            getName(id){
+                let _this =this;
+                this.$axios.get('/user/get/'+id).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        // _this.books = resp.data.result
+                        // console.log(resp.data.result.userNickname);
+                        _this.tempName =  resp.data.result.userNickname;
+                        // _this.tempName=resp.data.result.userNickname;
+                        // item.userNickname=resp.data.result.userNickname;
+                        // console.log(resp.data.result.userNickname);
+                        // _this.follows.userNickName = resp.data.result.userNickname;
+                        // return row.followFollowerid=resp.data.result.userNickname;
+
+                    }
+                })
             }
+        },
+        mounted(){
+            this.blogID=this.$route.query.blogId;
+            this.commenter=this.$store.state.uid;
+            this.loadComment();
+            console.log(this.blogID);
+
         }
     }
 </script>

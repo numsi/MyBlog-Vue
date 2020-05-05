@@ -6,8 +6,8 @@
                 <span>标签</span>
             </div>
             <div class="text item">
-                <el-tag size="mini" v-for="(item,i) in blog_tag"   :index="item.index"  class="tag-item" @click="tag(item.index)">
-                    {{item.name}}
+                <el-tag size="mini" v-for="(item,i) in blog_tag"   :index="item.index"  class="tag-item" @click="tag(item.tagId)">
+                    {{item.tagName}}
                 </el-tag>
             </div>
         </el-card>
@@ -20,11 +20,7 @@
         data(){
             return{
                 blog_tag:[
-                    {index: '0', name: 'new'},
-                    {index: '1', name: 'Java'},
-                    {index: '2', name: 'Python'},
-                    {index: '3', name: 'C'},
-                    {index: '4', name: 'C++'}
+                    {tagId: '-1', tagName: 'new'},
                 ]
             }
         },
@@ -36,9 +32,24 @@
                 //         'name': name
                 //     }
                 // });
-                console.log("点击标签:"+name);
+                // console.log("点击标签:"+name);
                 this.bus.$emit("blog_tag", name)
             },
+            loadTags()
+            {
+                let _this = this;
+                let uid = this.$store.state.uid;
+                this.$axios.get('/tag/list?id='+uid+'&pageSize=50&pageNum=1').then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        // _this.books = resp.data.result
+                        let tags=resp.data.result.list;
+                        _this.blog_tag = _this.blog_tag.concat(tags);
+                    }
+                })
+            },
+        },
+        mounted(){
+            this.loadTags();
         }
     }
 </script>

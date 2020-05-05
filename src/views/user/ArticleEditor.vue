@@ -3,13 +3,13 @@
 
     <el-row>
       <el-input
-        v-model="article.articleTitle"
+        v-model="blog.blogTitle"
         style="margin: 10px 0px;font-size: 18px;"
         placeholder="请输入标题"></el-input>
     </el-row>
     <el-row style="height: calc(100vh - 140px);">
       <mavon-editor
-        v-model="article.articleContentMd"
+        v-model="blog.blogContentMd"
         style="height: 100%;"
         ref=md
         @save="saveArticles"
@@ -24,34 +24,34 @@
         <el-divider content-position="left">摘要</el-divider>
         <el-input
           type="textarea"
-          v-model="article.articleAbstract"
+          v-model="blog.blogAbstract"
           rows="6"
           maxlength="255"
           show-word-limit></el-input>
         <el-divider content-position="left">封面</el-divider>
         <div style="margin-top: 20px">
-          <el-input v-model="article.articleCover" autocomplete="off" placeholder="图片 URL"></el-input>
+          <el-input v-model="blog.blogCover" autocomplete="off" placeholder="图片 URL"></el-input>
           <img-upload @onUpload="uploadImg" ref="imgUpload" style="margin-top: 5px"></img-upload>
         </div>
 
         <!--文章分类-->
         <el-divider content-position="left">分类</el-divider>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="blog.blogKind" placeholder="请选择">
           <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in kinds"
+                  :key="item.kindId"
+                  :label="item.kindName"
+                  :value="item.kindId">
           </el-option>
         </el-select>
         <!--文章标签-->
         <el-divider content-position="left">标签</el-divider>
-        <el-select v-model="value" placeholder="请选择">
+        <el-select v-model="blog.blogTag" placeholder="请选择">
           <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in tags"
+                  :key="item.tagId"
+                  :label="item.tagName"
+                  :value="item.tagId">
           </el-option>
         </el-select>
 
@@ -80,24 +80,10 @@
     components: {ImgUpload},
     data () {
       return {
-        article: {},
+        blog: {},
         dialogVisible: false,
-          options: [{
-              value: '选项1',
-              label: '黄金糕'
-          }, {
-              value: '选项2',
-              label: '双皮奶'
-          }, {
-              value: '选项3',
-              label: '蚵仔煎'
-          }, {
-              value: '选项4',
-              label: '龙须面'
-          }, {
-              value: '选项5',
-              label: '北京烤鸭'
-          }],
+          kinds: [],
+          tags:[],
           value: '',
           radio: 3
       }
@@ -106,46 +92,107 @@
       // if (this.$route.params.article) {
       //   this.article = this.$route.params.article
       // }
+        if(this.$route.params.blog!=null){
+            this.blog=this.$route.params.blog;
+        }
+
+
+        this.loadTags();
+        this.loadKind();
     },
     methods: {
       saveArticles (value, render) {
-        // // value 是 md，render 是 html
-        // this.$confirm('是否保存并发布文章?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //     this.$axios
-        //       .post('/admin/content/article', {
-        //         id: this.article.id,
-        //         articleTitle: this.article.articleTitle,
-        //         articleContentMd: value,
-        //         articleContentHtml: render,
-        //         articleAbstract: this.article.articleAbstract,
-        //         articleCover: this.article.articleCover,
-        //         articleDate: this.article.articleDate
-        //       }).then(resp => {
-        //       if (resp && resp.data.code === 200) {
-        //         this.$message({
-        //           type: 'info',
-        //           message: '已保存成功'
-        //         })
-        //       }
-        //     })
-        //   }
-        // ).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消发布'
-        //   })
-        // })
+          let _this = this;
+          let uid = this.$store.state.uid;
+        // value 是 md，render 是 html
+        this.$confirm('是否保存并发布文章?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+            if(this.blog.blogId==null){
+                this.$axios
+                    .post('/blog/add', {
+                        blogAuthor: uid,
+                        blogTitle: _this.blog.blogTitle,
+                        blogContentMd: value,
+                        blogContentHtml: render,
+                        blogReleaseType: _this.radio,
+                        blogKind: _this.blog.blogKind,
+                        blogTag: _this.blog.blogTag,
+                        blogAbstract: _this.blog.blogAbstract,
+                        blogCover: _this.blog.blogCover,
+
+                    }).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        _this.$message({
+                            type: 'info',
+                            message: '已保存成功'
+                        })
+                        this.$router.push('/')
+                    }
+                })
+            }else{
+                this.$axios
+                    .post('/blog/update', {
+                        blogId:_this.blog.blogId,
+                        blogAuthor: uid,
+                        blogTitle: _this.blog.blogTitle,
+                        blogContentMd: value,
+                        blogContentHtml: render,
+                        blogReleaseType: _this.radio,
+                        blogKind: _this.blog.blogKind,
+                        blogTag: _this.blog.blogTag,
+                        blogAbstract: _this.blog.blogAbstract,
+                        blogCover: _this.blog.blogCover,
+
+                    }).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        this.$message({
+                            type: 'info',
+                            message: '修改成功'
+                        })
+                        this.$router.push('/')
+                    }
+                })
+            }
+
+
+          }
+        ).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消发布'
+          })
+        })
           console.log("保存文章");
 
       },
       uploadImg () {
-        // this.article.articleCover = this.$refs.imgUpload.url
-          console.log("上传封面");
-      }
+          this.blog.blogCover = this.$refs.imgUpload.url
+          console.log(this.$refs.imgUpload.url);
+      },
+      loadKind(){
+          let _this = this;
+          this.$axios.get('/kind/list').then(resp => {
+              if (resp && resp.data.code === 200) {
+                  // _this.books = resp.data.result
+                  _this.kinds = resp.data.result;
+              }
+          })
+      },
+      loadTags()
+      {
+          let _this = this;
+          let uid = this.$store.state.uid;
+          this.$axios.get('/tag/list?id='+uid+'&pageSize=50&pageNum=1').then(resp => {
+              if (resp && resp.data.code === 200) {
+                  // _this.books = resp.data.result
+                  _this.tags=resp.data.result.list;
+              }
+          })
+      },
     }
   }
 </script>
