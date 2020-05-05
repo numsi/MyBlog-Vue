@@ -60,11 +60,11 @@
                             let data = resp.data.result
                             // _this.$store.commit('login', data)
                             console.log(data);
-                            _this.$store.commit('getUid',data.userId);
-                            _this.$store.commit('getToken',data.userId);
-                            _this.$store.commit('getUserName',data.userUsername);
-                            _this.$store.commit('getNickname',data.userNickname);
-                            _this.$store.commit('getImg',data.userImgUrl);
+                            _this.$store.commit('getUid',data.user.userId);
+                            _this.$store.commit('getToken',data.token);
+                            _this.$store.commit('getUserName',data.user.userUsername);
+                            _this.$store.commit('getNickname',data.user.userNickname);
+                            _this.$store.commit('getImg',data.user.userImgUrl);
                             _this.$router.push("/home");
                         } else {
                             this.$alert(resp.data.message, '提示', {

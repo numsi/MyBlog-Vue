@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 import Index from '../views/Index'
 import Home from '../views/Home'
 import Login from '../views/Login'
@@ -12,6 +13,12 @@ import ShowUser from '../views/user/ShowUser'
 import UserSetting from '../views/user/UserSetting'
 import Search from '../views/user/Search'
 import UserAction from '../views/user/UserAction'
+import AdminLogin from '../views/admin/AdminLogin'
+import AdminHome from '../views/admin/AdminHome'
+import AdminBlog from '../views/admin/AdminBlog'
+import AdminKind from '../views/admin/AdminKind'
+import AdminUser from '../views/admin/AdminUser'
+import AdminInfo from '../views/admin/AdminInfo'
 
 import InfoManagement from '../components/InfoManagement'
 import BlogManagement from '../components/BlogManagement'
@@ -37,65 +44,101 @@ const routes = [
           {
               path: '/blog',
               name: 'MyBlog',
-              component: MyBlog
+              component: MyBlog,
+              meta: {
+                  requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+              },
           },
           {
               path:'/detail',
               name:'Detail',
-              component:Detail
+              component:Detail,
+              meta: {
+                  requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+              },
           },
           {
               path:'/editor',
               name:'ArticleEditor',
-              component:ArticleEditor
+              component:ArticleEditor,
+              meta: {
+                  requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+              },
           },
           {
               path:'/showuser',
               name:'ShowUser',
-              component:ShowUser
+              component:ShowUser,
+              meta: {
+                  requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+              },
           },
           {
               path:'/usersetting',
               name:'UserSetting',
               component:UserSetting,
+              meta: {
+                  requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+              },
               redirect:'/usersetting/profile',
               children:[
                   {
                       path:'profile',
                       name:'InfoManagement',
-                      component:InfoManagement
+                      component:InfoManagement,
+                      meta: {
+                          requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                      },
                   },
                   {
                       path:'my_blog',
                       name:'BlogManagement',
-                      component:BlogManagement
+                      component:BlogManagement,
+                      meta: {
+                          requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                      },
                   },
                   {
                       path:'my_follow',
                       name:'MyFollow',
-                      component:MyFollow
+                      component:MyFollow,
+                      meta: {
+                          requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                      },
                   },
                   {
                       path:'my_tag',
                       name:'TagManagement',
-                      component:TagManagement
+                      component:TagManagement,
+                      meta: {
+                          requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                      },
                   },
                   {
                       path:'my_comment',
                       name:'CommentManagement',
-                      component:CommentManagement
+                      component:CommentManagement,
+                      meta: {
+                          requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                      },
                   },
                   {
                       path:'password_update',
                       name:'PasswordUpdate',
-                      component:PasswordUpdate
+                      component:PasswordUpdate,
+                      meta: {
+                          requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                      },
                   },
               ]
           },
           {
               path:'/search',
               name:'Search',
-              component:Search
+              component:Search,
+              meta: {
+                  requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+              },
           },
           {
               path:'/action',
@@ -116,6 +159,39 @@ const routes = [
       name: 'Register',
       component: Register
   },
+    {
+        path: '/adminLogin',
+        name: 'AdminLogin',
+        component: AdminLogin
+    },
+    {
+        path: '/adminHome',
+        name: 'AdminHome',
+        component: AdminHome,
+        redirect:'/adminHome/user',
+        children:[
+            {
+                path: 'blog',
+                name: 'AdminBlog',
+                component: AdminBlog,
+            },
+            {
+                path: 'user',
+                name: 'AdminUser',
+                component: AdminUser,
+            },
+            {
+                path: 'kind',
+                name: 'AdminKind',
+                component: AdminKind,
+            },
+            {
+                path: 'info',
+                name: 'AdminInfo',
+                component: AdminInfo,
+            }
+        ]
+    },
 
     // {
     //     path: "/404",
@@ -132,6 +208,37 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+
+router.beforeEach((to, from, next) => {
+    //
+    // if(to.path === '/login') {
+    //     next();
+    // } else {
+    //     let token = localStorage.getItem('token');
+    //     if(token === 'null' || token === '') {
+    //         next('/login');
+    //     }else {
+    //         next();
+    //     }
+    // }
+
+    if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+        if (store.state.token) { // 通过vuex state获取当前的token是否存在
+            next();
+        }
+        else {
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath} // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            })
+        }
+    }
+    else {
+        next();
+    }
+
 })
 
 export default router
