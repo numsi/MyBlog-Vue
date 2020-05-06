@@ -11,26 +11,17 @@
                     style="width: 100%"
                     :max-height="tableHeight">
                 <el-table-column
-                        type="selection"
-                        width="55">
-                </el-table-column>
-                <el-table-column type="expand">
-                    <template slot-scope="props">
-                        <el-form label-position="left" inline>
-                            <el-form-item>
-                                <span>{{ props.row.articleAbstract }}</span>
-                            </el-form-item>
-                        </el-form>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        prop="articleTitle"
-                        label="文章ID（点击查看评论内容）"
+
+                        label="文章名"
                         fit>
+                    <template slot-scope="scope">
+                        <a :href="scope.row.blogUrl" target="_blank" class="buttonText">{{scope.row.blogName}}</a>
+                    </template>
+
                 </el-table-column>
                 <el-table-column
-                        prop="articleDate"
-                        label="发布日期"
+                        prop="commentCreattime"
+                        label="评论日期"
                         width="200">
                 </el-table-column>
                 <el-table-column
@@ -38,20 +29,29 @@
                         label="操作"
                         width="180">
                     <template slot-scope="scope">
+
+                        <el-popover
+                                placement="bottom"
+                                title="评论内容"
+                                width="200"
+                                trigger="click"
+                                :content="scope.row.commentContent">
+                            <el-button
+                                    slot="reference"
+                                    type="text"
+                                    size="small">
+                                查看
+                            </el-button>
+                        </el-popover>
+
                         <el-button
-                                @click.native.prevent="viewArticle(scope.row.id)"
-                                type="text"
-                                size="small">
-                            查看
-                        </el-button>
-                        <el-button
-                                @click.native.prevent="editArticle(scope.row)"
+                                @click.native.prevent="editArticle(scope.row.commentId)"
                                 type="text"
                                 size="small">
                             编辑
                         </el-button>
                         <el-button
-                                @click.native.prevent="deleteArticle(scope.row.id)"
+                                @click.native.prevent="deleteArticle(scope.row.commentId)"
                                 type="text"
                                 size="small">
                             移除
@@ -79,20 +79,20 @@
         data () {
             return {
                 comments: [
-                    {
-                        id:"1",
-                        articleTitle:"标题1",
-                        articleAbstract:"摘要1",
-                        articleDate:"2020-4-22",
 
-                    }
                 ],
+                dialogFormVisible: false,
                 pageSize: 10,
-                total: 0
+                pageNum:1,
+                total: 0,
+                form: {
+                    name: '',
+                },
             }
         },
         mounted () {
             // this.loadArticles()
+            this.loadComments();
         },
         computed: {
             tableHeight () {
@@ -100,36 +100,72 @@
             }
         },
         methods: {
-            loadArticles() {
-                // var _this = this
-                // this.$axios.get('/article/' + this.pageSize + '/1').then(resp => {
-                //     if (resp && resp.data.code === 200) {
-                //         _this.articles = resp.data.result.content
-                //         _this.total = resp.data.result.totalElements
-                //     }
-                // })
+            loadComments() {
+                let _this = this;
+                let uid = this.$store.state.uid;
+                this.$axios.get('/comment/listByUser?id='+uid+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        // _this.books = resp.data.result
+                        _this.comments=resp.data.result.list;
+
+                        _this.comments.forEach((item,i) => {
+                            this.$axios.get('/blog/get/' + item.commentBlog).then(resp => {
+                                if (resp && resp.data.code === 200) {
+                                    // _this.books = resp.data.result
+                                    _this.$set(item, 'blogName', resp.data.result.blogTitle);
+                                    // item.userNickname=resp.data.result.userNickname;
+                                    // console.log(resp.data.result.userNickname);
+                                    // _this.follows.userNickName = resp.data.result.userNickname;
+                                    // return row.followFollowerid=resp.data.result.userNickname;
+
+                                }
+                            })
+
+                            _this.$set(item, 'blogUrl', "http://localhost:9000/detail?blogId="+item.commentBlog);
+
+
+                        })
+
+                        _this.total=resp.data.result.total;
+                        console.log(resp.data.result.list);
+                    }
+                })
             },
             handleCurrentChange(page) {
-                // var _this = this
-                // this.$axios.get('/article/' + this.pageSize + '/' + page).then(resp => {
-                //     if (resp && resp.data.code === 200) {
-                //         _this.articles = resp.data.result.content
-                //         _this.total = resp.data.result.totalElements
-                //     }
-                // })
+
+                let _this = this;
+                let uid = this.$store.state.uid;
+                _this.pageNum=page;
+                this.$axios.get('/comment/listByUser?id='+uid+'&pageSize='+_this.pageSize+'&pageNum='+_this.pageNum).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        // _this.books = resp.data.result
+                        _this.comments=resp.data.result.list;
+
+                        _this.comments.forEach((item,i) => {
+                            this.$axios.get('/blog/get/' + item.commentBlog).then(resp => {
+                                if (resp && resp.data.code === 200) {
+                                    // _this.books = resp.data.result
+                                    _this.$set(item, 'blogName', resp.data.result.blogTitle);
+                                    // item.userNickname=resp.data.result.userNickname;
+                                    // console.log(resp.data.result.userNickname);
+                                    // _this.follows.userNickName = resp.data.result.userNickname;
+                                    // return row.followFollowerid=resp.data.result.userNickname;
+
+                                }
+                            })
+
+                            _this.$set(item, 'blogUrl', "http://localhost:9000/detail?blogId="+item.commentBlog);
+
+
+                        })
+
+                        _this.total=resp.data.result.total;
+                        console.log(resp.data.result.list);
+                    }
+                })
             },
-            viewArticle(id) {
-                // let articleUrl = this.$router.resolve(
-                //     {
-                //         path: '../../jotter/article',
-                //         query: {
-                //             id: id
-                //         }
-                //     }
-                // )
-                // window.open(articleUrl.href, '_blank')
-            },
-            editArticle(article) {
+
+            editArticle(commentId) {
                 // this.$router.push(
                 //     {
                 //         name: 'Editor',
@@ -144,10 +180,27 @@
                     // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
                     // inputErrorMessage: '邮箱格式不正确'
                 }).then(({ value }) => {
-                    this.$message({
-                        type: 'success',
-                        message: '你的邮箱是: ' + value
-                    });
+
+                    let newComment = value;
+
+                    let _this = this;
+                    let uid = this.$store.state.uid;
+                    _this.$axios.post('/comment/update',{
+                        commentContent:newComment,
+                        commentId:commentId
+
+                    }).then(resp => {
+                        if (resp && resp.data.code === 200) {
+                            let data = resp.data.result
+                            // _this.$store.commit('login', data)
+                            console.log(data);
+                            this.$router.go(0);
+                        }else {
+                            console.log(resp.data.message);
+                            _this.$message(resp.data.message)
+                        }
+                    })
+
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -156,24 +209,19 @@
                 });
             },
             deleteArticle(id) {
-                // this.$confirm('此操作将永久删除该文章, 是否继续?', '提示', {
-                //     confirmButtonText: '确定',
-                //     cancelButtonText: '取消',
-                //     type: 'warning'
-                // }).then(() => {
-                //         this.$axios
-                //             .delete('/admin/content/article/' + id).then(resp => {
-                //             if (resp && resp.data.code === 200) {
-                //                 this.loadArticles()
-                //             }
-                //         })
-                //     }
-                // ).catch(() => {
-                //     this.$message({
-                //         type: 'info',
-                //         message: '已取消删除'
-                //     })
-                // })
+                // console.log("测试啊啊啊");
+                let _this = this;
+                this.$axios.get('/comment/delete/' + id).then(resp => {
+                    if (resp && resp.data.code === 200) {
+                        this.$router.go(0);
+                        // _this.books = resp.data.result
+                        // item.userNickname=resp.data.result.userNickname;
+                        // console.log(resp.data.result.userNickname);
+                        // _this.follows.userNickName = resp.data.result.userNickname;
+                        // return row.followFollowerid=resp.data.result.userNickname;
+
+                    }
+                })
             }
         }
     }

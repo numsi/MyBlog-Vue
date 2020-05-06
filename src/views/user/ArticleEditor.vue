@@ -131,6 +131,8 @@
                             message: '已保存成功'
                         })
                         this.$router.push('/')
+                    }else {
+                        this.$message(resp.data.message)
                     }
                 })
             }else{
@@ -154,6 +156,8 @@
                             message: '修改成功'
                         })
                         this.$router.push('/')
+                    }else {
+                        this.$message(resp.data.message)
                     }
                 })
             }

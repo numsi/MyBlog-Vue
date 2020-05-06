@@ -20,6 +20,7 @@
                 // isActive:"/usersetting/profile",
                 sideList: [
                     // {name: 'dashboard', sideItem: '信息总览'},
+                    // {name: '/adminHome/dashboard', sideItem: '首页'},
                     {name: '/adminHome/user', sideItem: '用户管理'},
                     {name: '/adminHome/kind', sideItem: '分类管理'},
                     {name: '/adminHome/blog', sideItem: '文章管理'},
@@ -32,8 +33,7 @@
         methods: {
             routerTo(item) {
                 if(item.name=='logout'){
-                    this.$store.commit('loginOut');
-                    this.$router.push('/home');
+                    this.loginOut();
                 }else{
                     this.$router.push(item.name);
                     console.log("11111");
@@ -43,6 +43,13 @@
 
                 //发送博客种类
                 // this.bus.$emit("blog_kind", item.sideItem )
+            },
+            loginOut(){
+                this.$store.commit('loginOut');
+                // this.$router.go(0);
+
+                this.$router.push('/');
+                this.$router.go(0);
             },
             // handleSelect (key, keyPath) {
             //     this.isActive = key

@@ -8,7 +8,7 @@
                 </div>
                 <!--作者-->
                 <div style="text-align: center">
-                    <h4>作者：<router-link to="">{{author.userNickname}}</router-link></h4>
+                    <h4>作者：<router-link :to="{path:'showuser',query:{userId: blog.blogAuthor}}">{{author.userNickname}}</router-link></h4>
                 </div>
                 <el-divider content-position="left">
                     <span>

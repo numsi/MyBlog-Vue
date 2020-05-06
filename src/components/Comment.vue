@@ -86,16 +86,20 @@
             },
             //改变回复者
             changeCommenter(name,index){
-                 this.getName(name);
-                this.oldComment =this.tempName
+                if(name!=-1){
+                    this.getName(name);
+                    this.oldComment =this.tempName
 
-                this.chosedIndex = index;
-                this.type = 1;
-                console.log(name);
+                    this.chosedIndex = index;
+                    this.type = 1;
+                    console.log(name);
+                }
+
             },
             //改变回复者为本文作者
             canelComment() {
                 this.type = 0;
+                this.chosedIndex=-1
             },
             loadComment(){
                 let _this =this;
@@ -118,6 +122,8 @@
                                     // _this.follows.userNickName = resp.data.result.userNickname;
                                     // return row.followFollowerid=resp.data.result.userNickname;
 
+                                }else{
+                                    _this.$set(item, 'userNickname', "NULL");
                                 }
                             });
 
@@ -169,6 +175,9 @@
                         _this.comment = resp.data.result.list;
 
                         _this.comment.forEach((item, i) => {
+
+
+
                             this.$axios.get('/user/get/' + item.commentAuthor).then(resp => {
                                 if (resp && resp.data.code === 200) {
                                     // _this.books = resp.data.result
@@ -178,6 +187,8 @@
                                     // _this.follows.userNickName = resp.data.result.userNickname;
                                     // return row.followFollowerid=resp.data.result.userNickname;
 
+                                }else{
+                                    _this.$set(item, 'userNickname', "NULL");
                                 }
                             })
 

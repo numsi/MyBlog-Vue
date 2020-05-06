@@ -25,7 +25,7 @@
                     {name: '/usersetting/my_blog', sideItem: '我的文章'},
                     {name: '/usersetting/my_tag', sideItem: '我的标签'},
                     {name: '/usersetting/my_follow', sideItem: '我的关注'},
-                    // {name: '/usersetting/my_comment', sideItem: '我的评论'},
+                    {name: '/usersetting/my_comment', sideItem: '我的评论'},
                     {name: '/usersetting/password_update', sideItem: '密码修改'}
                 ]
             }

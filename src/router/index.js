@@ -20,6 +20,7 @@ import AdminKind from '../views/admin/AdminKind'
 import AdminUser from '../views/admin/AdminUser'
 import AdminInfo from '../views/admin/AdminInfo'
 
+
 import InfoManagement from '../components/InfoManagement'
 import BlogManagement from '../components/BlogManagement'
 import PasswordUpdate from '../components/PasswordUpdate'
@@ -168,28 +169,45 @@ const routes = [
         path: '/adminHome',
         name: 'AdminHome',
         component: AdminHome,
+        meta: {
+            requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+        },
         redirect:'/adminHome/user',
         children:[
             {
                 path: 'blog',
                 name: 'AdminBlog',
                 component: AdminBlog,
+                meta: {
+                    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                },
             },
             {
                 path: 'user',
                 name: 'AdminUser',
                 component: AdminUser,
+                meta: {
+                    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                },
             },
             {
                 path: 'kind',
                 name: 'AdminKind',
                 component: AdminKind,
+                meta: {
+                    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                },
             },
             {
                 path: 'info',
                 name: 'AdminInfo',
                 component: AdminInfo,
-            }
+                meta: {
+                    requireAuth: true, // 添加该字段，表示进入这个路由是需要登录的
+                },
+            },
+
+
         ]
     },
 
