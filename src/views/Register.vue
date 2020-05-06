@@ -79,7 +79,7 @@
                 this.$axios
                     .post('/user/add', {
                         userUsername: this.registerForm.user_name,
-                        userPassword: this.registerForm.user_password,
+                        userPassword: this.$md5(this.registerForm.user_password),
                         userNickname: this.registerForm.user_nickname,
                     })
                     .then(resp => {

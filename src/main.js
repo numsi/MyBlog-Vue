@@ -8,6 +8,8 @@ import axios from 'axios'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/iconfont/iconfont.css'
+import md5 from 'js-md5';
+
 
 
 
@@ -22,6 +24,7 @@ Vue.use(Element)
 
 //全局注册组件
 Vue.prototype.$axios = axios;
+Vue.prototype.$md5 = md5;
 
 
 axios.interceptors.request.use(config => {

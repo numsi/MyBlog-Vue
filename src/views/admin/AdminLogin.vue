@@ -52,7 +52,7 @@
                 this.$axios
                     .post('/admin/login', {
                         adminName: this.loginForm.username,
-                        adminPassword: this.loginForm.password
+                        adminPassword: this.$md5(this.loginForm.password)
                     })
                     .then(resp => {
                         if (resp.data.code === 200) {

@@ -165,7 +165,7 @@
                     let _this = this;
                     _this.$axios.post('/user/update',{
                         userId:tagId,
-                        userPassword:newPassword
+                        userPassword:_this.$md5(newPassword)
 
                     }).then(resp => {
                         if (resp && resp.data.code === 200) {
@@ -216,7 +216,7 @@
                 let uid = this.$store.state.uid;
                 _this.$axios.post('/user/add',{
                     userUsername:_this.form.userUsername,
-                    userPassword:_this.form.userPassword,
+                    userPassword:_this.$md5(_this.form.userPassword),
                     userNickname:_this.form.userNickname,
                 }).then(resp => {
                     if (resp && resp.data.code === 200) {

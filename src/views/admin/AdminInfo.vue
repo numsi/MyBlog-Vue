@@ -85,25 +85,29 @@
                 this.$axios
                     .post('/admin/login', {
                         adminName: "admin",
-                        adminPassword: this.resetForm.password
+                        adminPassword: this.$md5(this.resetForm.password)
                     })
                     .then(resp => {
                         if (resp.data.code === 200) {
                             let data = resp.data.result
+                            // console.log(data);
                             // _this.$store.commit('login', data)
 
                             _this.$axios.post('/admin/update',{
-                                adminId:data.adminId,
+                                // adminId:1,
                                 adminName: "admin",
-                                adminPassword: _this.resetForm.newpassword1,
+                                adminPassword: _this.$md5(_this.resetForm.newpassword1),
                                 adminEmail:_this.resetForm.email,
                             }).then(resp => {
+                                console.log(resp);
                                 if (resp && resp.data.code === 200) {
                                     let data = resp.data.result
                                     // _this.$store.commit('login', data)
                                     console.log(data);
                                     _this.$message("信息修改成功");
                                     this.$router.push("/adminHome");
+                                }else {
+                                    _this.$message(resp.data.message)
                                 }
                             })
 

@@ -103,7 +103,7 @@
                 this.$axios
                     .post('/user/login', {
                         userUsername: username,
-                        userPassword: this.resetForm.password
+                        userPassword: this.$md5(this.resetForm.password)
                     })
                     .then(resp => {
                         if (resp.data.code === 200) {
@@ -112,7 +112,7 @@
 
                             _this.$axios.post('/user/update',{
                                 userId:uid,
-                                userPassword:_this.resetForm.newpassword1,
+                                userPassword:_this.$md5(_this.resetForm.newpassword1),
                             }).then(resp => {
                                 if (resp && resp.data.code === 200) {
                                     let data = resp.data.result
