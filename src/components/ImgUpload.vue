@@ -2,6 +2,7 @@
   <el-upload
           class="img-upload"
           ref="upload"
+          :headers = "headers"
           action="http://localhost:6001/blog/covers"
           with-credentials
           :on-preview="handlePreview"
@@ -23,7 +24,10 @@
     data () {
       return {
         fileList: [],
-        url: ''
+        url: '',
+          headers: {
+              token: this.$store.state.token  //从cookie里获取token，并赋值  Authorization ，而不是token
+          },
       }
     },
     methods: {

@@ -55,13 +55,13 @@
           </el-option>
         </el-select>
 
-        <!--发布形式-->
-        <el-divider content-position="left">发布形式</el-divider>
-        <el-radio-group v-model="radio">
-          <el-radio :label="3">公开</el-radio>
-          <el-radio :label="6">仅粉丝可见</el-radio>
-          <el-radio :label="9">私密</el-radio>
-        </el-radio-group>
+        <!--&lt;!&ndash;发布形式&ndash;&gt;-->
+        <!--<el-divider content-position="left">发布形式</el-divider>-->
+        <!--<el-radio-group v-model="radio">-->
+          <!--<el-radio :label="3">公开</el-radio>-->
+          <!--<el-radio :label="6">仅粉丝可见</el-radio>-->
+          <!--<el-radio :label="9">私密</el-radio>-->
+        <!--</el-radio-group>-->
 
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>

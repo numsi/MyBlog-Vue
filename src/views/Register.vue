@@ -50,19 +50,19 @@
             };
             return {
                 rules: {
-                    // user_name: [
-                    //     {required: true, message: '用户名不能为空', trigger: 'blur'},
-                    //     {max:20,min:6,message:"最少6位最多20位",trigger: 'blur'}
-                    // ],
-                    // user_password: [
-                    //     {required: true, message: '密码不能为空', trigger: 'blur'},
-                    //     {max:10,min:0,message:"最多10位",trigger: 'blur'}
-                    // ],
-                    // user_nickname: [
-                    //     {required: true, message: '昵称不能为空', trigger: 'blur'},
-                    //     {max:8,min:0,message:"最多8位",trigger: 'blur'}
-                    // ],
-                    // rePassword: [{required: true, validator: validPwd, trigger: 'blur'}]
+                    user_name: [
+                        {required: true, message: '用户名不能为空', trigger: 'blur'},
+                        {max:20,min:6,message:"最少6位最多20位",trigger: 'blur'}
+                    ],
+                    user_password: [
+                        {required: true, message: '密码不能为空', trigger: 'blur'},
+                        {max:10,min:0,message:"最多10位",trigger: 'blur'}
+                    ],
+                    user_nickname: [
+                        {required: true, message: '昵称不能为空', trigger: 'blur'},
+                        {max:8,min:0,message:"最多8位",trigger: 'blur'}
+                    ],
+                    rePassword: [{required: true, validator: validPwd, trigger: 'blur'}]
                 },
                 registerForm: {
                     user_name: '',

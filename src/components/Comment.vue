@@ -7,11 +7,17 @@
                 <p v-if="comment.length==0">暂无评论，我来发表第一篇评论！</p>
                 <div v-else>
                     <div class="comment" v-for="(item,index) in comment" v-bind:index="index" >
-                        <div>
-                            <b>{{item.userNickname}}<span>{{item.commentUpdate}}</span><span v-if="item.commentParent!=-1">回复  :{{item.reply}}</span></b>
+
+                        <span>
+                            <div style="display:inline-block;">
+                                <el-avatar style="width: 50px;height: 50px" size="large" :src="item.userImg"></el-avatar>
+                            </div>
+                        <div style="display:inline-block;margin-left:10px;">
+                            <b>{{item.userNickname}}<span>{{item.commentUpdate}}</span><span v-if="item.commentParent!=-1">回复  :{{item.oldCom}}   <span>  {{item.reply}}</span></span></b>
                             <b></b>
                             <p @click="changeCommenter(item.commentAuthor,item.commentId)">{{item.commentContent}}</p>
                         </div>
+                        </span>
                     </div>
                 </div>
 
@@ -116,6 +122,7 @@
                             this.$axios.get('/user/get/'+item.commentAuthor).then(resp => {
                                 if (resp && resp.data.code === 200) {
                                     // _this.books = resp.data.result
+                                    _this.$set(item,'userImg',resp.data.result.userImgUrl);
                                     _this.$set(item,'userNickname',resp.data.result.userNickname);
                                     // item.userNickname=resp.data.result.userNickname;
                                     // console.log(resp.data.result.userNickname);
@@ -123,6 +130,7 @@
                                     // return row.followFollowerid=resp.data.result.userNickname;
 
                                 }else{
+
                                     _this.$set(item, 'userNickname', "NULL");
                                 }
                             });
@@ -133,7 +141,22 @@
                                 _this.$axios.get('/comment/get/'+item.commentParent).then(resp => {
                                     if (resp && resp.data.code === 200) {
 
-                                        _this.getName(resp.data.result.commentAuthor);
+                                        let temp = item;
+
+                                        this.$axios.get('/user/get/'+resp.data.result.commentAuthor).then(res => {
+                                            if (res && res.data.code === 200) {
+
+                                                temp.tempName =res.data.result.userNickname;
+                                                _is.$set(temp,"oldCom",res.data.result.userNickname);
+
+
+                                            }
+                                        })
+
+
+
+
+                                        // _this.getName(resp.data.result.commentAuthor);
                                         _this.$set(item,'reply',resp.data.result.commentUpdate);
 
                                     }
@@ -141,24 +164,7 @@
                             }
                         })
 
-                        // _this.comment.forEach((item,i) => {
-                        //     if(item.commentParent!=-1)
-                        //     {
-                        //         this.$axios.get('/comment/get/'+item.commentParent).then(resp => {
-                        //             if (resp && resp.data.code === 200) {
-                        //                 // _this.books = resp.data.result
-                        //                 console.log(resp.data.result);
-                        //                 // _this.$set(item,'parent',resp.data.result.userNickname);
-                        //                 // item.userNickname=resp.data.result.userNickname;
-                        //                 // console.log(resp.data.result.userNickname);
-                        //                 // _this.follows.userNickName = resp.data.result.userNickname;
-                        //                 // return row.followFollowerid=resp.data.result.userNickname;
-                        //
-                        //             }
-                        //         })
-                        //     }
-                        //
-                        // })
+
 
                         // console.log(resp.data.result.list);
                     }
@@ -181,6 +187,7 @@
                             this.$axios.get('/user/get/' + item.commentAuthor).then(resp => {
                                 if (resp && resp.data.code === 200) {
                                     // _this.books = resp.data.result
+                                    _this.$set(item,'userImg',resp.data.result.userImgUrl);
                                     _this.$set(item, 'userNickname', resp.data.result.userNickname);
                                     // item.userNickname=resp.data.result.userNickname;
                                     // console.log(resp.data.result.userNickname);
@@ -196,14 +203,20 @@
 
                                 _this.$axios.get('/comment/get/' + item.commentParent).then(resp => {
                                     if (resp && resp.data.code === 200) {
-                                        // _this.books = resp.data.result
-                                        _this.getName(resp.data.result.commentAuthor);
+
+                                        let temp = item;
+
+                                        this.$axios.get('/user/get/'+resp.data.result.commentAuthor).then(res => {
+                                            if (res && res.data.code === 200) {
+
+                                                temp.tempName =res.data.result.userNickname;
+                                                _is.$set(temp,"oldCom",res.data.result.userNickname);
+
+
+                                            }
+                                        })
                                         _this.$set(item,'reply',_this.tempName+"  "+resp.data.result.commentUpdate);
-                                        // _this.$set(item,'parent',resp.data.result.userNickname);
-                                        // item.userNickname=resp.data.result.userNickname;
-                                        // console.log(resp.data.result.userNickname);
-                                        // _this.follows.userNickName = resp.data.result.userNickname;
-                                        // return row.followFollowerid=resp.data.result.userNickname;
+
 
                                     }
                                 })

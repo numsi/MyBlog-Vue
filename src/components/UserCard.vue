@@ -29,6 +29,14 @@
                 </div>
             </el-col>
         </el-row>
+
+        <el-row :gutter="50">
+            <el-col :span="12" :offset="3">
+                <div v-if="this.userInfo.userIntroduction==null">暂无个人介绍</div>
+                <div v-if="this.userInfo.userIntroduction!=null">{{this.userInfo.userIntroduction}}</div>
+            </el-col>
+        </el-row>
+
     </el-card>
 </template>
 

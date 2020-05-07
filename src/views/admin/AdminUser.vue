@@ -45,6 +45,11 @@
                     :max-height="tableHeight">
 
                 <el-table-column
+                        prop="userUsername"
+                        label="用户名"
+                        fit>
+                </el-table-column>
+                <el-table-column
                         prop="userNickname"
                         label="用户昵称"
                         fit>

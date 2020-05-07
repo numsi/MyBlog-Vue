@@ -118,7 +118,10 @@
         data() {
             return {
                 rules: {
-                    userNickname: [{required: true, message: '昵称不能为空', trigger: 'blur'}],
+                    userNickname: [
+                        {required: true, message: '昵称不能为空', trigger: 'blur'},
+                        {max:8,min:0,message:"最多8位",trigger: 'blur'}
+                        ],
                     userEmail: [{required: true, message: '邮箱不能为空', trigger: 'blur'}],
                     userGender: [{required: true, message: '性别不能为空', trigger: 'blur'}],
                     userIntroduction: [{required: true, message: '个人介绍不能为空', trigger: 'blur'}],
@@ -222,7 +225,7 @@
                             // _this.$store.commit('login', data)
                             console.log(data);
                             _this.$store.commit('getUid',data.userId);
-                            _this.$store.commit('getToken',data.userId);
+                            // _this.$store.commit('getToken',data.userId);
                             _this.$store.commit('getNickname',data.userNickname);
                             _this.$store.commit('getImg',data.userImgUrl);
                             this.$router.go(0);
