@@ -18,9 +18,9 @@
             <el-form-item label="确认密码：" prop="newpassword1">
                 <el-input type="password" v-model="resetForm.newpassword1" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="电子邮箱：" prop="email">
-                <el-input type="text" v-model="resetForm.email" auto-complete="off"></el-input>
-            </el-form-item>
+            <!--<el-form-item label="电子邮箱：" prop="email">-->
+                <!--<el-input type="text" v-model="resetForm.email" auto-complete="off"></el-input>-->
+            <!--</el-form-item>-->
             <el-form-item>
                 <el-button type="primary" @click.native.prevent="toAmend">确认修改</el-button>
             </el-form-item>
@@ -56,7 +56,7 @@
                     newpassword1: "",
                     password: "",
                     username: "",//此处只是后台需要的字段而已，如果前期有公用cookie里面有获取并且保存过，现在需要另外调用进来，具体的获取方法就看个人了
-                    email:""
+                    // email:""
                 },
                 resetFormRules: {
                     password: [
@@ -68,9 +68,9 @@
                     newpassword1: [
                         { required: true, validator: validatePass2, trigger: "blur" }
                     ],
-                    email: [
-                        { required: true, message: "请输入邮箱", trigger: 'blur' }
-                    ],
+                    // email: [
+                    //     { required: true, message: "请输入邮箱", trigger: 'blur' }
+                    // ],
                 }
             };
         },
@@ -97,7 +97,7 @@
                                 // adminId:1,
                                 adminName: "admin",
                                 adminPassword: _this.$md5(_this.resetForm.newpassword1),
-                                adminEmail:_this.resetForm.email,
+                                // adminEmail:_this.resetForm.email,
                             }).then(resp => {
                                 console.log(resp);
                                 if (resp && resp.data.code === 200) {
